@@ -25,9 +25,9 @@ def update_config(config_path: str, config_parameters: str) -> None:
 
 def display_daemon(logfile_path: str) -> None:
 	"""Checks for changes to original display logfile, and makes config file update if need be."""
+	with open(logfile_path) as logfile:
+		current_display_status = logfile.read()
 	while True:
-		with open(logfile_path) as logfile:
-			current_display_status = logfile.read()
 
 		proc = subprocess.run(["xrandr", "--listactivemonitors"], text=True, stdout=subprocess.PIPE)
 		if proc.stdout != current_display_status:
