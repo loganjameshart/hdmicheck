@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import subprocess
 from getpass import getuser
 import time
@@ -18,13 +20,17 @@ def update_config():
 
 
 def display_daemon(logfile_path):
-	with open(logfile_path) as logfile:
-		current_display_status = logfile.read()
 	while True:
+		with open(logfile_path) as logfile:
+			current_display_status = logfile.read()
+
 		proc = subprocess.run(["xrandr", "--listactivemonitors"], text=True, stdout=subprocess.PIPE)
 		if proc.stdout != current_display_status:
 			update_config()
 			print("Updated config.")
+			with open(f"/home/{USER}/xchange.log", "w") as display_logfile: # update the file with the new status
+				display_logfile.write(proc.stdout)
+		
 		time.sleep(2)
 
 
