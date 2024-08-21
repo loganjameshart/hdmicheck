@@ -6,20 +6,25 @@ import time
 
 USER = getuser()
 DISPLAY_LOG = f"/home/{USER}/xchange.log"
+CONFIG_PATH = f"/home/{USER}/.config/display.conf"
+CONFIG_PARAMETERS = "x=480\ny=720"
 
-# get on startup
-def startup_display_detection():
+
+def startup_display_detection() -> None:
+	"""Gets status of current displays."""
 	proc = subprocess.run(["xrandr", "--listactivemonitors"], text=True, stdout=subprocess.PIPE)
 	with open(f"/home/{USER}/xchange.log", "w") as display_logfile:
 		display_logfile.write(proc.stdout)
 
 
-def update_config():
-	with open(f"/home/{USER}/.config/display.conf", "w") as display_config:
-		display_config.write("x=480\ny=720")
+def update_config(config_path: str, config_parameters: str) -> None:
+	"""Updates target config file with chosen instructions."""
+	with open(CONFIG_PATH, "w") as display_config:
+		display_config.write(CONFIG_PARAMETERS)
 
 
-def display_daemon(logfile_path):
+def display_daemon(logfile_path: str) -> None:
+	"""Checks for changes to original display logfile, and makes config file update if need be."""
 	while True:
 		with open(logfile_path) as logfile:
 			current_display_status = logfile.read()
