@@ -28,7 +28,6 @@ def display_daemon(logfile_path: str) -> None:
 	with open(logfile_path) as logfile:
 		current_display_status = logfile.read()
 	while True:
-
 		proc = subprocess.run(["xrandr", "--listactivemonitors"], text=True, stdout=subprocess.PIPE)
 		if proc.stdout != current_display_status:
 			update_config(CONFIG_PATH, CONFIG_PARAMETERS)
