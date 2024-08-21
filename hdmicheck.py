@@ -19,8 +19,8 @@ def startup_display_detection() -> None:
 
 def update_config(config_path: str, config_parameters: str) -> None:
 	"""Updates target config file with chosen instructions."""
-	with open(CONFIG_PATH, "w") as display_config:
-		display_config.write(CONFIG_PARAMETERS)
+	with open(config_path, "w") as display_config:
+		display_config.write(config_parameters)
 
 
 def display_daemon(logfile_path: str) -> None:
@@ -31,7 +31,7 @@ def display_daemon(logfile_path: str) -> None:
 
 		proc = subprocess.run(["xrandr", "--listactivemonitors"], text=True, stdout=subprocess.PIPE)
 		if proc.stdout != current_display_status:
-			update_config()
+			update_config(CONFIG_PATH, CONFIG_PARAMETERS)
 			print("Updated config.")
 			with open(f"/home/{USER}/xchange.log", "w") as display_logfile: # update the file with the new status
 				display_logfile.write(proc.stdout)
